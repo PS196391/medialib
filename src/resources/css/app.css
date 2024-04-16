@@ -1,0 +1,51 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Rest of your CSS */
+.slick-slide {
+    margin: 0 4px;
+}
+
+/* the parent */
+.slick-list {
+    margin: 0 -4px;
+}
+
+.bg-beige {
+    background-color: #F2EBE1;
+}
+
+.border-beige {
+    border-color: #F2EBE1;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80rem;
+}
+
+.text-green-700 {
+    color: #009568
+}
+
+.bg-green-700 {
+    background-color: #009568
+}
+
+#svg {
+    position: absolute;
+    transition: 0.5s ease-out;
+    z-index: 50;
+}
+
+
+.nav-block.show {
+    display: block !important;
+}

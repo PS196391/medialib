@@ -1,0 +1,36 @@
+{
+    "name": "danir/medialib",
+    "description": "Eerste plugin",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Danir\\MediaLib\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "PS196391",
+            "email": "ps196391@edu.summacollege.nl"
+        }
+    ],
+    "minimum-stability": "alpha",
+    "require": {
+        "php": "^8.2",
+        "livewire/livewire": "^3.3",
+        "illuminate/contracts": "^10.0|^11.0",
+        "spatie/image": "^3.3",
+        "spatie/image-optimizer": "^1.7",
+        "spatie/laravel-medialibrary": "^11.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.3"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Danir\\MediaLib\\MediaLibServiceProvider"
+            ]
+        }
+    }
+}
