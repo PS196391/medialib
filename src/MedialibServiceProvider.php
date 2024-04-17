@@ -35,15 +35,15 @@ class MedialibServiceProvider extends ServiceProvider
             File::makeDirectory(app_path('Livewire'), 0755, true);
         }
 
-        // // Publish models
-        // $this->publishes(
-        //     [
-        //         __DIR__.'/Models/Picture.php' => app_path('Models/Picture.php'),
-        //         __DIR__.'/Models/ResizedImage.php' => app_path('Models/ResizedImage.php'),
-        //         __DIR__.'/Models/Tag.php' => app_path('Models/Tag.php'),
-        //     ],
-        //     'medialib-models'
-        // );
+        // Publish models
+        $this->publishes(
+            [
+                __DIR__.'/Models/Picture.php' => app_path('Models/Picture.php'),
+                __DIR__.'/Models/ResizedImage.php' => app_path('Models/ResizedImage.php'),
+                __DIR__.'/Models/Tag.php' => app_path('Models/Tag.php'),
+            ],
+            'medialib-models'
+        );
 
         // // Publish migrations
         // $this->publishes(
