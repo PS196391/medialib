@@ -8,6 +8,7 @@
             </button>
 
             <form x-show="open" wire:submit.prevent="save" class="space-y-4 pb-5">
+                @csrf
                 <input type="file" wire:model="photo" class="w-full py-2 px-3 border rounded-md">
 
 
@@ -59,6 +60,7 @@
             missenden resized afbeeldingen voor alles</button>
         <!-- Delete Selected Button -->
         <form wire:submit.prevent="deleteSelectedPictures">
+            @csrf
             <button type="submit"
                 class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
                 Delete Selected
@@ -128,6 +130,7 @@
 
             <!-- Form for adding tags -->
             <form wire:submit.prevent="saveTags" class="mb-4">
+                @csrf
                 <div class="mb-4">
                     <label for="tag" class="block mb-2">Select Tags:</label>
                     <select wire:model="tags" multiple id="tag"
