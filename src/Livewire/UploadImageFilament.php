@@ -4,8 +4,8 @@ namespace Danir\MediaLib\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Models\Picture;
-use App\Models\Tag;
+use Danir\MediaLib\Models\Picture;
+use Danir\MediaLib\Models\ResizedImage;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
