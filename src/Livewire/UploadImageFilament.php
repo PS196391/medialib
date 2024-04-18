@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Danir\MediaLib\Models\Picture;
 use Danir\MediaLib\Models\ResizedImage;
+use Danir\MediaLib\Models\Tag;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
