@@ -1,6 +1,6 @@
 <?php
 
-namespace Danir\MediaLib\Models\Picture;
+namespace Danir\MediaLib\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
