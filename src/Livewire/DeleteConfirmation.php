@@ -1,5 +1,5 @@
 <?php
-namespace Danir\MediaLib\Livewire; 
+namespace Danir\MediaLib\Livewire;
 
 use Livewire\Component;
 
