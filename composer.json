@@ -21,7 +21,8 @@
         "illuminate/contracts": "^10.0|^11.0",
         "spatie/image": "^3.3",
         "spatie/image-optimizer": "^1.7",
-        "spatie/laravel-medialibrary": "^11.0.0"
+        "spatie/laravel-medialibrary": "^11.0.0",
+        "tailwindcss": "^3.4.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.3"
