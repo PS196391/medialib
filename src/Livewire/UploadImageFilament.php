@@ -51,10 +51,11 @@ class UploadImageFilament extends Component
         $tempFile = $this->createWebpImage($this->photo->getRealPath(), 30);
         $compressedSize = filesize($tempFile);
 
-        $picture = $this->createPicture($filenameWithoutExt, $compressedSize);
+        // Opslaan van de afbeelding naar het dynamisch aangemaakte disk
+        $path = Storage::disk('dynamic')->putFile('images', $this->photo);
 
-        // The createBatchDirectory function is called with the id of the picture as an argument
-        $batchDirectory = $this->createBatchDirectory($picture->id);
+        // Maak een nieuw Picture-object en sla het op in de database
+        $picture = $this->createPicture($filenameWithoutExt, $compressedSize, $path);
 
         // De WebP-versie van de originele afbeelding wordt toegevoegd aan de media-collectie
         $picture->addMedia($tempFile)
@@ -92,6 +93,7 @@ class UploadImageFilament extends Component
     }
 
 
+
     
     private function createWebpImage($imagePath, $quality)
     {
@@ -104,14 +106,13 @@ class UploadImageFilament extends Component
     private function createBatchDirectory($id)
     {
         $batchDirectory = 'storage/' . $id . '/resized_images';
-
-        if (!File::isDirectory($batchDirectory)) {
-            File::makeDirectory($batchDirectory, 0755, true);
-        }
-
+    
+        // Maken van de batch directory op het dynamisch aangemaakte disk
+        Storage::disk('dynamic')->makeDirectory($batchDirectory);
+    
         return $batchDirectory;
     }
-
+    
     private function createResizedImage($size, $filenameWithoutExt, $batchDirectory, $imagePath)
     {
         $image = imagecreatefromstring(file_get_contents($imagePath));
