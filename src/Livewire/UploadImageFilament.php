@@ -51,11 +51,10 @@ class UploadImageFilament extends Component
         $tempFile = $this->createWebpImage($this->photo->getRealPath(), 30);
         $compressedSize = filesize($tempFile);
 
-        // Opslaan van de afbeelding naar het dynamisch aangemaakte disk
-        $path = Storage::disk('dynamic')->putFile('images', $this->photo);
+        $picture = $this->createPicture($filenameWithoutExt, $compressedSize);
 
-        // Maak een nieuw Picture-object en sla het op in de database
-        $picture = $this->createPicture($filenameWithoutExt, $compressedSize, $path);
+        // The createBatchDirectory function is called with the id of the picture as an argument
+        $batchDirectory = $this->createBatchDirectory($picture->id);
 
         // De WebP-versie van de originele afbeelding wordt toegevoegd aan de media-collectie
         $picture->addMedia($tempFile)
@@ -92,8 +91,24 @@ class UploadImageFilament extends Component
         $this->reset(['photo', 'tags', 'fileTitle']);
     }
 
-
-
+    private function createBatchDirectory($id)
+    {
+        $batchDirectory = storage_path('app/public/' . $id . '/resized_images');
+    
+        if (!File::isDirectory($batchDirectory)) {
+            File::makeDirectory($batchDirectory, 0755, true);
+        }
+    
+        return $batchDirectory;
+    }
+    
+    private function createWebpImage($imagePath, $quality)
+    {
+        $image = imagecreatefromstring(file_get_contents($imagePath));
+        $tempFile = tempnam(sys_get_temp_dir(), 'webp') . '.webp';
+        imagewebp($image, $tempFile, $quality);
+        return $tempFile;
+    }
     
     private function createWebpImage($imagePath, $quality)
     {
@@ -106,10 +121,11 @@ class UploadImageFilament extends Component
     private function createBatchDirectory($id)
     {
         $batchDirectory = 'storage/' . $id . '/resized_images';
-    
-        // Maken van de batch directory op het dynamisch aangemaakte disk
-        Storage::disk('dynamic')->makeDirectory($batchDirectory);
-    
+
+        if (!File::isDirectory($batchDirectory)) {
+            File::makeDirectory($batchDirectory, 0755, true);
+        }
+
         return $batchDirectory;
     }
     
