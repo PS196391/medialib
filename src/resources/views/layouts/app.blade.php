@@ -7,8 +7,8 @@
     <title>@yield('Beginopdracht')</title>
 
     {{-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/> --}}
-    @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
+    @vite('resources/css/medialib.css')
+    @vite('resources/js/medialib.js')
     @livewireStyles
 </head>
 
