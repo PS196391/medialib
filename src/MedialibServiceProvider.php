@@ -82,8 +82,14 @@ class MedialibServiceProvider extends ServiceProvider
             ], 'medialib-config'
         );
 
-        // Load routes
-        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        // Publish routes
+        $this->publishes(
+            [
+            __DIR__.'/routes/medialibweb.php' => base_path('routes/medialibweb.php'),
+            ],
+            'medialib-routes'
+        );
+
 
         // Register Livewire components
         Livewire::component('delete-confirmation', DeleteConfirmation::class);
