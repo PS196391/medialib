@@ -14,7 +14,7 @@
             "email": "ps196391@edu.summacollege.nl"
         }
     ],
-    "minimum-stability": "alpha",
+    "minimum-stability": "dev",
     "require": {
         "php": "^8.2",
         "livewire/livewire": "^3.3",
@@ -31,7 +31,6 @@
             "providers": [
                 "Danir\\MediaLib\\MediaLibServiceProvider"
             ]
-            
         }
     }
 }

@@ -109,14 +109,7 @@ class UploadImageFilament extends Component
         imagewebp($image, $tempFile, $quality);
         return $tempFile;
     }
-    
-    private function createWebpImage($imagePath, $quality)
-    {
-        $image = imagecreatefromstring(file_get_contents($imagePath));
-        $tempFile = tempnam(sys_get_temp_dir(), 'webp') . '.webp';
-        imagewebp($image, $tempFile, $quality);
-        return $tempFile;
-    }
+
     
     private function createBatchDirectory($id)
     {
