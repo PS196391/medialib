@@ -109,18 +109,6 @@ class UploadImageFilament extends Component
         imagewebp($image, $tempFile, $quality);
         return $tempFile;
     }
-
-    
-    private function createBatchDirectory($id)
-    {
-        $batchDirectory = 'storage/' . $id . '/resized_images';
-
-        if (!File::isDirectory($batchDirectory)) {
-            File::makeDirectory($batchDirectory, 0755, true);
-        }
-
-        return $batchDirectory;
-    }
     
     private function createResizedImage($size, $filenameWithoutExt, $batchDirectory, $imagePath)
     {
