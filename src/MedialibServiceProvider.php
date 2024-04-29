@@ -17,8 +17,6 @@ class MedialibServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Load views
-        $this->loadViewsFrom(__DIR__.'/resources/views', 'medialib');
 
         // Publish Livewire components to the app/Livewire directory
         $this->publishes(
