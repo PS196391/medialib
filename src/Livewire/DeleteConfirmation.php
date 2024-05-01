@@ -12,25 +12,23 @@ class DeleteConfirmation extends Component
 
     public function openModal($itemIds)
     {
+        dd('showDeleteConfirmationModal event received');
+
         $this->itemToDelete = $itemIds;
         $this->isOpen = true;
     }
     
-    
-
     public function deleteItem()
     {
         \Log::info("deleteItem called with ID: {$this->itemToDelete}"); // Log the item ID
-    
+
         // Send an event with the ID of the item to be deleted
         $this->dispatch('deleteItemConfirmed', ['itemId' => $this->itemToDelete]);
         \Log::info("deleteItemConfirmed event dispatched with ID: {$this->itemToDelete}");
-    
+
         $this->isOpen = false;
     }
-    
-    
-    
+
 
     public function render()
     {

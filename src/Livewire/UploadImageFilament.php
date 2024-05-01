@@ -239,15 +239,13 @@ class UploadImageFilament extends Component
 
     public function confirmDeleteSelected()
     {
-        // Controleren of er geselecteerde afbeeldingen zijn om te verwijderen
         if (count($this->selectedPictures) > 0) {
-            // Dispatch een event om de bevestigingsmodaliteit te openen
-            $this->dispatch('showDeleteConfirmationModal');
+            $this->dispatch('showDeleteConfirmationModal', $this->selectedPictures);
         } else {
-            // Melding weergeven als er geen geselecteerde afbeeldingen zijn
             $this->dispatch('notifytop', 'Selecteer minstens één afbeelding om te verwijderen.');
         }
     }
+    
 
     public function confirmDeleteSelectedPictures()
     {
@@ -360,7 +358,6 @@ class UploadImageFilament extends Component
         }
     }
     
-
     public function generateMissingResizedImages()
     {
         // Load image sizes from configuration file

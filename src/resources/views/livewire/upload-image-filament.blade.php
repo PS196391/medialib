@@ -59,13 +59,16 @@
             class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">Genereer
             missenden resized afbeeldingen voor alles</button>
         <!-- Delete Selected Button -->
-        <form wire:submit.prevent="deleteSelectedPictures">
+        <!-- In livewire.upload-image-filament.blade.php -->
+
+        <form wire:submit.prevent="confirmDeleteSelected">
             @csrf
             <button type="submit"
                 class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
                 Delete Selected
             </button>
         </form>
+
         @livewire('delete-confirmation')
 
         <!--ingeladeimages-->
@@ -178,7 +181,7 @@
                 @forelse ($selectedPicture->resizedImages as $resizedImage)
                     <div class="flex items-center bg-gray-200 text-gray-800 px-2 py-1 rounded-full mr-2 mb-2"
                         wire:key="selectedPictureResizedImage_{{ $resizedImage->id }}">
-                        <span>{{ $resizedImage->path }}</span>
+                        <span>{{ url('storage/' . $resizedImage->picture_id . '/resized_images/' . basename($resizedImage->path)) }}</span>
                         <button class="ml-2 text-red-600 hover:text-red-800"
                             wire:click="deleteResizedImage({{ $resizedImage->id }})">
                             X
