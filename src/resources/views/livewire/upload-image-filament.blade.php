@@ -1,4 +1,4 @@
-<div class="flex p-4 bg-gray-600 shadow-md min-h-screen">
+<div class="flex p-4 shadow-md min-h-screen">
     <div class="{{ $selectedPicture ? 'w-2/3' : 'w-full' }} space-y-4 pb-5">
 
         <div x-data="{ open: false }" class="shadow-md p-8 rounded-md bg-white">
@@ -176,7 +176,7 @@
             <h2 class="text-lg font-semibold mb-2">Resized Images</h2>
             <div class="flex flex-wrap mb-4">
                 @forelse ($selectedPicture->resizedImages as $resizedImage)
-                    <div class="flex items-center bg-gray-200 text-gray-800 px-2 py-1 rounded-full mr-2 mb-2"
+                    <div class="flex items-center bg-gray-200 text-gray-800 px-2 py-1 rounded-full mr-2 mb-2 sm:w-auto"
                         wire:key="selectedPictureResizedImage_{{ $resizedImage->id }}">
                         <span>{{ url('storage/' . $resizedImage->picture_id . '/resized_images/' . basename($resizedImage->path)) }}</span>
                         <button class="ml-2 text-red-600 hover:text-red-800"
@@ -191,6 +191,7 @@
                     class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 ">Genereer
                     missenden resized afbeeldingen</button>
             </div>
+
 
 
 
