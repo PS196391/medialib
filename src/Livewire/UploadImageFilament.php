@@ -29,7 +29,7 @@ class UploadImageFilament extends Component
     public $itemToDelete = null;
 
 
-    protected $listeners = ['refreshComponent' => '$refresh', 'itemDeleted' => 'updateAfterDeletion', 'deleteItemConfirmed' => 'deleteItem'];
+    protected $listeners = ['refreshComponent' => '$refresh', 'itemDeleted' => 'updateAfterDeletion', 'deleteItemConfirmed' => 'deleteItem', 'deleteItemsConfirmed' => 'deleteItems'];
 
     public function save()
     {
@@ -240,32 +240,15 @@ class UploadImageFilament extends Component
     public function confirmDeleteSelected()
     {
         if (count($this->selectedPictures) > 0) {
-            $this->dispatch('showDeleteConfirmationModal', $this->selectedPictures);
+            $this->dispatch('showDeleteModal', $this->selectedPictures);
         } else {
             $this->dispatch('notifytop', 'Selecteer minstens één afbeelding om te verwijderen.');
         }
     }
-    
-
-    public function confirmDeleteSelectedPictures()
-    {
-        // Controleren of er geselecteerde afbeeldingen zijn om te verwijderen
-        if (count($this->selectedPictures) > 0) {
-            // Dispatch een event om de bevestigingsmodaliteit te openen
-            $this->dispatch('showDeleteConfirmationModal', $this->selectedPictures);
-        } else {
-            // Melding weergeven als er geen geselecteerde afbeeldingen zijn
-            $this->dispatch('notifytop', 'Selecteer minstens één afbeelding om te verwijderen.');
-        }
-    }
-    
-    
-    
     
     public function confirmDelete($itemId)
     {
         $itemExists = Picture::where('id', $itemId)->exists();
-        \Log::info("Item exists: {$itemExists}"); // Log if the item exists
 
         $this->dispatch('showDeleteModal', $itemId);
     }
@@ -282,6 +265,20 @@ class UploadImageFilament extends Component
             $this->itemToDelete = null;
         }
     }
+
+    public function deleteItems($itemIds)
+    {
+        // Check if $itemIds is an array and extract the IDs if necessary
+        $pictureIds = is_array($itemIds) ? $itemIds['itemIds'] : $itemIds;
+    
+        if ($pictureIds) {
+            foreach ($pictureIds as $pictureId) {
+                $this->deletePicture($pictureId);
+            }
+            $this->itemToDelete = null;
+        }
+    }
+    
     
     
     public function deletePicture($pictureId)
@@ -340,23 +337,7 @@ class UploadImageFilament extends Component
         }
     }
     
-    public function deleteSelectedPictures()
-    {
-        // Check if there are selected pictures to delete
-        if (count($this->selectedPictures) > 0) {
-            // Loop through each selected picture and delete it
-            foreach ($this->selectedPictures as $pictureId) {
-                $this->deletePicture($pictureId);
-            }
-            // Clear the selectedPictures array
-            $this->selectedPictures = [];
-            // Close the delete confirmation modal if it's open
-            $this->dispatch('closeDeleteConfirmationModal');
-        } else {
-            // Notify the user if no pictures are selected
-            $this->dispatch('notifytop', 'Selecteer minstens één afbeelding om te verwijderen.');
-        }
-    }
+
     
     public function generateMissingResizedImages()
     {

@@ -2,17 +2,18 @@
 namespace Danir\MediaLib\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Log;
+
 
 class DeleteConfirmation extends Component
 {
     public $isOpen = false;
     public $itemToDelete = null;
 
-    protected $listeners = ['showDeleteModal' => 'openModal'];
+    protected $listeners = ['showDeleteModal' => 'openModal', 'deleteItemsConfirmed' => 'deleteItems'];
 
     public function openModal($itemIds)
     {
-        dd('showDeleteConfirmationModal event received');
 
         $this->itemToDelete = $itemIds;
         $this->isOpen = true;
@@ -20,15 +21,18 @@ class DeleteConfirmation extends Component
     
     public function deleteItem()
     {
-        \Log::info("deleteItem called with ID: {$this->itemToDelete}"); // Log the item ID
-
-        // Send an event with the ID of the item to be deleted
-        $this->dispatch('deleteItemConfirmed', ['itemId' => $this->itemToDelete]);
-        \Log::info("deleteItemConfirmed event dispatched with ID: {$this->itemToDelete}");
-
+        Log::info('deleteItem called with itemToDelete: ' . json_encode($this->itemToDelete));
+    
+        if (is_array($this->itemToDelete)) {
+            // If itemToDelete is an array, dispatch deleteItemsConfirmed event
+            $this->dispatch('deleteItemsConfirmed', ['itemIds' => $this->itemToDelete]);
+        } else {
+            // If itemToDelete is a single item, dispatch deleteItemConfirmed event
+            $this->dispatch('deleteItemConfirmed', ['itemId' => $this->itemToDelete]);
+        }
+        // Close the modal after dispatching the event
         $this->isOpen = false;
     }
-
 
     public function render()
     {

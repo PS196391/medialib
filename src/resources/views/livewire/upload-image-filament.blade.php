@@ -59,8 +59,6 @@
             class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">Genereer
             missenden resized afbeeldingen voor alles</button>
         <!-- Delete Selected Button -->
-        <!-- In livewire.upload-image-filament.blade.php -->
-
         <form wire:submit.prevent="confirmDeleteSelected">
             @csrf
             <button type="submit"
@@ -68,7 +66,6 @@
                 Delete Selected
             </button>
         </form>
-
         @livewire('delete-confirmation')
 
         <!--ingeladeimages-->
