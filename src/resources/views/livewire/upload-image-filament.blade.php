@@ -47,12 +47,13 @@
                 </button>
 
                 <span wire:loading wire:target="photo">Uploading...</span>
-                <div x-data="{ open: false, message: '' }"
-                    x-on:notifytop.window="message = $event.detail; open = true; setTimeout(() => open = false, 4000)"
-                    x-show="open" class=" bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-                    <p x-text="message"></p>
-                </div>
+
             </form>
+        </div>
+        <div x-data="{ open: false, message: '' }"
+            x-on:notifytop.window="message = $event.detail; open = true; setTimeout(() => open = false, 4000)"
+            x-show="open" class=" bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            <p x-text="message"></p>
         </div>
 
         <button wire:click="generateMissingResizedImages"
