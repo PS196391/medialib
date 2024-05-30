@@ -1,5 +1,5 @@
 <?php
-namespace Danir\MediaLib\Livewire;
+namespace App\Livewire\Admin\Medialibrary;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
@@ -36,6 +36,6 @@ class DeleteConfirmation extends Component
 
     public function render()
     {
-        return view('livewire.delete-confirmation');
+        return view('livewire.admin.medialibrary.delete-confirmation');
     }
 }

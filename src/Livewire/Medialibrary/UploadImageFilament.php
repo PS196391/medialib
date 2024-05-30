@@ -1,6 +1,6 @@
 <?php
 
-namespace Danir\MediaLib\Livewire;
+namespace App\Livewire\Admin\Medialibrary;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -223,6 +223,7 @@ class UploadImageFilament extends Component
         }
     }
     
+    
     public function updateAltText()
     {
         $this->validate(['altText' => 'required|string|max:255']);
@@ -236,6 +237,7 @@ class UploadImageFilament extends Component
             $this->dispatch('notify', 'Alt text updated successfully!');
         }
     }
+    
 
     public function confirmDeleteSelected()
     {
@@ -311,31 +313,29 @@ class UploadImageFilament extends Component
     }
     
     
-    
-
-
-
-    
-    
     public function deleteResizedImage($resizedImageId)
     {
         $resizedImage = ResizedImage::find($resizedImageId);
     
         if ($resizedImage) {
-            // Delete the resized image file
-            if (File::exists($resizedImage->path)) {
-                File::delete($resizedImage->path);
-            }
-            $resizedImage->delete();
+            $filePath = $resizedImage->path;
     
-            $this->dispatch('notifytop', 'Resized image successfully deleted!');
-    
-            // Refresh the selected picture if it contains the deleted resized image
-            if ($this->selectedPicture && $this->selectedPicture->resizedImages()->where('id', $resizedImageId)->exists()) {
-                $this->selectedPicture = $this->selectedPicture->fresh();
+            if (File::exists($filePath)) {
+                if (File::delete($filePath)) {
+                    $resizedImage->delete();
+                    $this->dispatch('notifytop', 'Resized image successfully deleted!');
+                } else {
+                    $this->dispatch('notifytop', 'Failed to delete resized image!');
+                }
+            } else {
+                $this->dispatch('notifytop', 'Resized image does not exist!');
             }
+        } else {
+            $this->dispatch('notifytop', 'Resized image not found!');
         }
     }
+    
+    
     
 
     
@@ -393,30 +393,44 @@ class UploadImageFilament extends Component
 
     public function generateMissingResizedImagesForSelected()
     {
+        \Log::info('generateMissingResizedImagesForSelected method called');
+    
         $imageSizes = json_decode(file_get_contents(config_path('image_sizes.json')), true)['sizes'];
-
+    
         $picture = $this->selectedPicture;
+    
+        if (!$picture) {
+            \Log::error('No selected picture found');
+            $this->dispatch('notifytop', 'No selected picture found');
+            return;
+        }
+    
+        \Log::info('Selected picture ID: ' . $picture->id);
+    
         $originalImagePath = $picture->getFirstMedia('images')->getPath();
         $originalDirectory = pathinfo($originalImagePath, PATHINFO_DIRNAME);
         $originalFilename = pathinfo($originalImagePath, PATHINFO_FILENAME);
-
+    
         $batchDirectory = $this->createBatchDirectory($picture->id);
-
+        \Log::info('Batch directory: ' . $batchDirectory);
+    
         foreach ($imageSizes as $size) {
             $width = $size['width'];
             $height = $size['height'];
             $createWithCrop = $size['create_with_crop']; // New flag
-
+    
             $resizedFileName = $originalFilename . '_' . $width . 'x' . $height . ($createWithCrop ? '' : '_no_crop') . '.webp';
             $resizedFilePath = $batchDirectory . '/' . $resizedFileName;
-
+    
             if (!File::exists($resizedFilePath)) {
+                \Log::info('Resized image does not exist, generating: ' . $resizedFileName);
+    
                 if ($createWithCrop) {
                     $resizedFilePath = $this->createResizedImage($size, $originalFilename, $batchDirectory, $originalImagePath);
                 } else {
                     $resizedFilePath = $this->createResizedImageWithoutCrop($size, $originalFilename, $batchDirectory, $originalImagePath);
                 }
-
+    
                 $resizedImage = new ResizedImage(
                     [
                     'picture_id' => $picture->id,
@@ -424,11 +438,15 @@ class UploadImageFilament extends Component
                     ]
                 );
                 $picture->resizedImages()->save($resizedImage);
+            } else {
+                \Log::info('Resized image already exists: ' . $resizedFileName);
             }
         }
-
+    
+        \Log::info('Resized images successfully generated and associated with the selected picture');
         $this->dispatch('notifytop', 'Resized images successfully generated and associated with the selected picture!');
     }
+    
 
     
     public function toggleAddTags($pictureId)
@@ -462,6 +480,7 @@ class UploadImageFilament extends Component
     }
     
     
+    
     public function removeTag($pictureId, $tagId)
     {
         $picture = Picture::find($pictureId);
@@ -492,6 +511,7 @@ class UploadImageFilament extends Component
         $this->dispatch('refreshComponent');
     }
     
+    
 
     // Voeg deze methode toe aan je component
     public function closeSelectedPictureDetails()
@@ -511,10 +531,10 @@ class UploadImageFilament extends Component
         }
 
         return view(
-            'livewire.upload-image-filament', [
+            'livewire.admin.medialibrary.upload-image-filament', [
             'pictures' => $pictures,
             'allTags' => $allTags,
             ]
-        )->layout('layouts.appzonder');
+        )->layout('components.admin');
     }
 }
